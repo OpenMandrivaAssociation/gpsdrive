@@ -16,6 +16,7 @@ Source0:	%{name}-%{version}.tar.bz2
 Source1:	%{name}-48.png
 Source2:	%{name}-32.png
 Source3:	%{name}-16.png
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires:	gdk-pixbuf-devel >= 0.11
 BuildRequires:	gtk+2-devel >= 2.1
 BuildRequires:	pcre-devel
