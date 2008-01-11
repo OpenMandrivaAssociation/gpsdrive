@@ -68,17 +68,6 @@ install -m644 %{SOURCE2} -D $RPM_BUILD_ROOT%{_iconsdir}/%{name}.png
 install -m644 %{SOURCE3} -D $RPM_BUILD_ROOT%{_miconsdir}/%{name}.png
 
 #menu entry
-mkdir -p $RPM_BUILD_ROOT%{_menudir}
-cat << EOF > $RPM_BUILD_ROOT%{_menudir}/%{name}
-?package(%{name}): \
-needs="x11" \ 
-section="More Applications/Sciences/Other" \
-title="GpsDrive" \
-longtitle="A GPS based navigation tool for Gnome" \
-command="%{_bindir}/%{name}" \
-icon="gpsdrive.png" \
-xdg="true"
-EOF
 
 desktop-file-install --vendor="" \
   --remove-category="Application" \
@@ -109,7 +98,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/gpsdrive.1*
 %{_mandir}/es/man1/gpsdrive.1*
 %{_mandir}/de/man1/gpsdrive.1*
-%{_menudir}/%{name}
 %{_miconsdir}/%{name}.png
 %{_iconsdir}/%{name}.png
 %{_liconsdir}/%{name}.png
