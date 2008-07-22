@@ -1,6 +1,6 @@
 %define	name 	gpsdrive
 %define	version	2.09
-%define	release	%mkrel 5
+%define	release	%mkrel 7
 
 %define	major	2
 %define	libname	%mklibname fly %{major}
