@@ -30,6 +30,8 @@ BuildRequires:	gtk+2-devel >= 2.1
 BuildRequires:	pcre-devel
 BuildRequires:	desktop-file-utils
 BuildRequires:	cmake
+BuildRequires:	libgdamm3-devel
+BuildRequires:	mapnik-devel
 Requires:	gdk-pixbuf >= 0.11
 
 %description
