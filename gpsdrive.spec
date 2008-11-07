@@ -100,4 +100,3 @@ rm -rf %{buildroot}
 %{_liconsdir}/%{name}.png
 %_datadir/%name
 %_datadir/applications/*
-%_datadir/pixmaps/*
