@@ -1,6 +1,14 @@
 %define	name 	gpsdrive
-%define	version	2.09
-%define	release	%mkrel 7
+%define	version	2.10
+%define beta	pre6
+%define rel	1
+%if %{beta}
+%define	release	%mkrel 0.%{beta}.%{rel}
+%define distname %{name}-%{version}%{beta}
+%else
+%define	release	%mkrel %{rel}
+%define distname %{name}-%{version}
+%endif
 
 %define	major	2
 %define	libname	%mklibname fly %{major}
@@ -12,7 +20,7 @@ Release:	%{release}
 License:	GPL
 Url:		http://www.kraftvoll.at/software/
 Group:		Networking/Other
-Source0:	%{name}-%{version}.tar.bz2
+Source0:	%{distname}.tar.gz
 Source1:	%{name}-48.png
 Source2:	%{name}-32.png
 Source3:	%{name}-16.png
@@ -51,7 +59,7 @@ Development files.
 
 
 %prep
-%setup -q
+%setup -q -n %{distname}
 
 %build
 %configure
