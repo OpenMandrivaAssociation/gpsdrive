@@ -18,7 +18,7 @@ Name:		%{name}
 Version:	%{version}
 Release:	%{release}
 License:	GPL
-Url:		http://www.kraftvoll.at/software/
+Url:		http://www.gpsdrive.de/
 Group:		Networking/Other
 Source0:	%{distname}.tar.gz
 Source1:	%{name}-48.png
