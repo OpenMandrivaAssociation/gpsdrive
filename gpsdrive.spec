@@ -74,16 +74,16 @@ cmake -D CMAKE_INSTALL_PREFIX=%{_prefix} ..
 popd
 
 %install
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 pushd build
 %makeinstall_std
 popd
 
-rm -rf $RPM_BUILD_ROOT/%_datadir/%name/{AUTHORS,FAQ*,LEEME,LISEZMOI,README*,TODO,NMEA*,GPS-*}
+rm -rf %{buildroot}%_datadir/%name/{AUTHORS,FAQ*,LEEME,LISEZMOI,README*,TODO,NMEA*,GPS-*}
 
-install -m644 %{SOURCE1} -D $RPM_BUILD_ROOT%{_liconsdir}/%{name}.png
-install -m644 %{SOURCE2} -D $RPM_BUILD_ROOT%{_iconsdir}/%{name}.png
-install -m644 %{SOURCE3} -D $RPM_BUILD_ROOT%{_miconsdir}/%{name}.png
+install -m644 %{SOURCE1} -D %{buildroot}%{_liconsdir}/%{name}.png
+install -m644 %{SOURCE2} -D %{buildroot}%{_iconsdir}/%{name}.png
+install -m644 %{SOURCE3} -D %{buildroot}%{_miconsdir}/%{name}.png
 
 #menu entry
 
@@ -92,12 +92,12 @@ desktop-file-install --vendor="" \
   --add-category="GTK" \
   --add-category="Science" \
   --add-category="X-MandrivaLinux-MoreApplications-Sciences-Other" \
-  --dir $RPM_BUILD_ROOT%{_datadir}/applications $RPM_BUILD_ROOT%{_datadir}/applications/*
+  --dir %{buildroot}%{_datadir}/applications %{buildroot}%{_datadir}/applications/*
 
 %find_lang %{name}
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %if %mdkversion < 200900
 %post
