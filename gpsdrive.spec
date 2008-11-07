@@ -29,6 +29,7 @@ BuildRequires:	gdk-pixbuf-devel >= 0.11
 BuildRequires:	gtk+2-devel >= 2.1
 BuildRequires:	pcre-devel
 BuildRequires:	desktop-file-utils
+BuildRequires:	cmake
 Requires:	gdk-pixbuf >= 0.11
 
 %description
@@ -60,14 +61,19 @@ Development files.
 
 %prep
 %setup -q -n %{distname}
+mkdir build
 
 %build
-%configure
+pushd build
+cmake -D CMAKE_INSTALL_PREFIX=%{_prefix} .. 
 %make
+popd
 
 %install
 rm -rf $RPM_BUILD_ROOT
-%makeinstall
+pushd build
+%makeinstall_std
+popd
 
 rm -rf $RPM_BUILD_ROOT/%_datadir/%name/{AUTHORS,FAQ*,LEEME,LISEZMOI,README*,TODO,NMEA*,GPS-*}
 
