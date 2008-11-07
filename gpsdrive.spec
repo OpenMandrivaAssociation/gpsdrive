@@ -90,7 +90,7 @@ rm -rf %{buildroot}
 
 %files -f %{name}.lang
 %defattr(-,root,root)
-%doc GPS-receivers AUTHORS TODO README LEEME
+%doc AUTHORS README NEWS
 %{_bindir}/*
 %{_mandir}/man1/*.1*
 %{_mandir}/es/man1/gpsdrive.1*
