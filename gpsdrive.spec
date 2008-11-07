@@ -24,6 +24,7 @@ Source0:	%{distname}.tar.gz
 Source1:	%{name}-48.png
 Source2:	%{name}-32.png
 Source3:	%{name}-16.png
+Patch0:		gpsdrive-2.10pre6-leaf.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires:	gdk-pixbuf-devel >= 0.11
 BuildRequires:	gtk+2-devel >= 2.1
@@ -63,6 +64,7 @@ Development files.
 
 %prep
 %setup -q -n %{distname}
+%patch0 -p1 -b .leaf
 mkdir build
 
 %build
