@@ -10,9 +10,6 @@
 %define distname %{name}-%{version}
 %endif
 
-%define	major	2
-%define	libname	%mklibname fly %{major}
-
 Summary:	GPS based navigation tool
 Name:		%{name}
 Version:	%{version}
@@ -43,24 +40,6 @@ displayed image can be zoomed. Maps can be downloaded from the Internet with
 one mouse click. The program provides information about speed, direction, 
 bearing, arrival time, actual position, and target position. Speech output 
 is also available.
-
-%package -n %libname
-Summary:	Gpsdrive needed library
-Group:		System/Libraries
-
-%description -n %libname
-Gpsdrive needed library
-
-%package -n %libname-devel
-Summary:	Gpsdrive needed library
-Group:		Development/C
-Requires:	%libname = %version
-Provides:	libfly-devel = %{version}-%{release}
-Provides:	fly-devel = %{version}-%{release}
-
-%description -n %libname-devel
-Development files.
-
 
 %prep
 %setup -q -n %{distname}
@@ -109,14 +88,6 @@ rm -rf %{buildroot}
 %clean_menus
 %endif
 
-%if %mdkversion < 200900
-%post -n %libname -p /sbin/ldconfig
-%endif
-
-%if %mdkversion < 200900
-%postun -n %libname -p /sbin/ldconfig
-%endif
-
 %files -f %{name}.lang
 %defattr(-,root,root)
 %doc GPS-receivers AUTHORS TODO README LEEME
@@ -130,13 +101,3 @@ rm -rf %{buildroot}
 %_datadir/%name
 %_datadir/applications/*
 %_datadir/pixmaps/*
-
-%files -n %libname
-%defattr(-,root,root)
-%_libdir/*.so.*
-
-%files -n %libname-devel
-%defattr(-,root,root)
-%_libdir/*.so
-%_libdir/*.*a
-
