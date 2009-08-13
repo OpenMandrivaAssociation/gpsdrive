@@ -1,6 +1,6 @@
 %define	name 	gpsdrive
 %define	version	2.10
-%define beta	pre6
+%define beta	pre7
 %define rel	1
 %if %{beta}
 %define	release	%mkrel 0.%{beta}.%{rel}
@@ -14,7 +14,7 @@ Summary:	GPS based navigation tool
 Name:		%{name}
 Version:	%{version}
 Release:	%{release}
-License:	GPL
+License:	GPLv2+
 Url:		http://www.gpsdrive.de/
 Group:		Networking/Other
 Source0:	%{distname}.tar.gz
@@ -23,14 +23,23 @@ Source2:	%{name}-32.png
 Source3:	%{name}-16.png
 Patch0:		gpsdrive-2.10pre6-leaf.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
-BuildRequires:	gdk-pixbuf-devel >= 0.11
+BuildRequires:	libgdk_pixbuf2.0-devel
 BuildRequires:	gtk+2-devel >= 2.1
 BuildRequires:	pcre-devel
+BuildRequires:	libxml2-devel
+BuildRequires:	cairo-devel
+BuildRequires:	pango-devel
+BuildRequires:	gettext-devel
 BuildRequires:	desktop-file-utils
 BuildRequires:	cmake
-BuildRequires:	libgdamm3-devel
+BuildRequires:	sqlite-devel
+BuildRequires:	curl-devel
+BuildRequires:	gpsd-devel
+BuildRequires:	libgda3.0-devel
+BuildRequires:	boost-devel
 BuildRequires:	mapnik-devel
-Requires:	gdk-pixbuf >= 0.11
+BuildRequires:	libspeechd-devel
+
 
 %description
 Gpsdrive is a map-based navigation system. It displays your position on a 
@@ -44,13 +53,10 @@ is also available.
 %prep
 %setup -q -n %{distname}
 %patch0 -p1 -b .leaf
-mkdir build
 
 %build
-pushd build
-cmake -D CMAKE_INSTALL_PREFIX=%{_prefix} .. 
+%cmake -D CMAKE_INSTALL_PREFIX=%{_prefix} .. 
 %make
-popd
 
 %install
 rm -rf %{buildroot}
@@ -90,7 +96,7 @@ rm -rf %{buildroot}
 
 %files -f %{name}.lang
 %defattr(-,root,root)
-%doc AUTHORS README NEWS
+%doc AUTHORS README
 %{_bindir}/*
 %{_mandir}/man1/*.1*
 %{_mandir}/es/man1/gpsdrive.1*
