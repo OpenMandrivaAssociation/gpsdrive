@@ -35,7 +35,7 @@ BuildRequires:	cmake
 BuildRequires:	sqlite-devel
 BuildRequires:	curl-devel
 BuildRequires:	gpsd-devel
-BuildRequires:	libgda3.0-devel
+BuildRequires:	gda3.0-devel
 BuildRequires:	boost-devel
 BuildRequires:	mapnik-devel
 BuildRequires:	libspeechd-devel
