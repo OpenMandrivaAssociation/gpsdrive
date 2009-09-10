@@ -1,7 +1,7 @@
 %define	name 	gpsdrive
 %define	version	2.10
 %define beta	pre7
-%define rel	1
+%define rel	2
 %if %{beta}
 %define	release	%mkrel 0.%{beta}.%{rel}
 %define distname %{name}-%{version}%{beta}
