@@ -1,7 +1,7 @@
 Summary:	GPS based navigation tool
 Name:		gpsdrive
 Version:	2.11
-Release:	%mkrel 1
+Release:	%mkrel 2
 License:	GPLv2+
 Group:		Networking/Other
 URL:		http://www.gpsdrive.de/
@@ -16,6 +16,7 @@ Patch2:		gpsdrive-2.10pre7-usepc.patch
 Patch3:		gpsdrive-2.10-newgps.patch
 Patch4:		gpsdrive-2.10-fix-dso-linking.patch
 Patch5:		gpsdrive-2.11-add-gdk-pixbuf2.patch
+Patch6:     gpsdrive_no_segfault_on_nan_lat.patch
 BuildRequires:	boost-devel
 BuildRequires:	cairo-devel
 BuildRequires:	cmake
@@ -61,6 +62,7 @@ is also available.
 %patch3 -p1 -b .newgps
 %patch4 -p1 -b .fix-dso-linking
 %patch5 -p1 -b .gdk-pixbuf2
+%patch6 -p0 -b .nan
 
 %build
 %cmake -D CMAKE_INSTALL_PREFIX=%{_prefix} .. 
