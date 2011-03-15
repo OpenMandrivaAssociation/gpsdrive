@@ -1,7 +1,7 @@
 Summary:	GPS based navigation tool
 Name:		gpsdrive
 Version:	2.11
-Release:	%mkrel 2
+Release:	%mkrel 3
 License:	GPLv2+
 Group:		Networking/Other
 URL:		http://www.gpsdrive.de/
@@ -18,26 +18,16 @@ Patch4:		gpsdrive-2.10-fix-dso-linking.patch
 Patch5:		gpsdrive-2.11-add-gdk-pixbuf2.patch
 Patch6:     gpsdrive_no_segfault_on_nan_lat.patch
 BuildRequires:	boost-devel
-BuildRequires:	cairo-devel
-BuildRequires:	cmake
 BuildRequires:	curl-devel
-BuildRequires:	desktop-file-utils
-BuildRequires:	gda2.0-devel
-BuildRequires:	gettext
-BuildRequires:	gettext-devel
+BuildRequires:	gtk+2-devel
 BuildRequires:	gpsd-devel
-BuildRequires:	gtk+2-devel >= 2.1
-BuildRequires:	icu-devel
-BuildRequires:	intltool
-BuildRequires:	libgdk_pixbuf2.0-devel
-BuildRequires:	libtool-devel
-BuildRequires:	libxml2-devel
 BuildRequires:	mapnik-devel
-BuildRequires:	pango-devel
-BuildRequires:	pcre-devel
-BuildRequires:	postgresql-devel
+BuildRequires:	pq-devel
 BuildRequires:	speech-dispatcher-devel
-BuildRequires:	sqlite-devel
+BuildRequires:	sqlite3-devel
+BuildRequires:	libxml2-devel
+BuildRequires:	cmake
+BuildRequires:	desktop-file-utils
 Provides:	perl(Geo::OSM::EntitiesV3)
 Provides:	perl(Geo::OSM::OsmReaderV5)
 Provides:	perl(Geo::OSM::EntitiesV5)
@@ -65,14 +55,13 @@ is also available.
 %patch6 -p0 -b .nan
 
 %build
-%cmake -D CMAKE_INSTALL_PREFIX=%{_prefix} .. 
-%make VERBOSE=1
+export CXXFLAGS="%optflags -DBOOST_FILESYSTEM_VERSION=2"
+%cmake
+%make
 
 %install
 rm -rf %{buildroot}
-pushd build
-%makeinstall_std
-popd
+%makeinstall_std -C build
 
 rm -rf %{buildroot}%_datadir/%name/{AUTHORS,FAQ*,LEEME,LISEZMOI,README*,TODO,NMEA*,GPS-*}
 
