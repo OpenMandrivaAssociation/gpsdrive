@@ -1,7 +1,7 @@
 Summary:	GPS based navigation tool
 Name:		gpsdrive
 Version:	2.11
-Release:	%mkrel 3
+Release:	4
 License:	GPLv2+
 Group:		Networking/Other
 URL:		http://www.gpsdrive.de/
@@ -16,7 +16,10 @@ Patch2:		gpsdrive-2.10pre7-usepc.patch
 Patch3:		gpsdrive-2.10-newgps.patch
 Patch4:		gpsdrive-2.10-fix-dso-linking.patch
 Patch5:		gpsdrive-2.11-add-gdk-pixbuf2.patch
-Patch6:     gpsdrive_no_segfault_on_nan_lat.patch
+Patch6:		gpsdrive_no_segfault_on_nan_lat.patch
+
+BuildRequires:	cmake
+BuildRequires:	desktop-file-utils
 BuildRequires:	boost-devel
 BuildRequires:	curl-devel
 BuildRequires:	gtk+2-devel
@@ -26,13 +29,11 @@ BuildRequires:	pq-devel
 BuildRequires:	speech-dispatcher-devel
 BuildRequires:	sqlite3-devel
 BuildRequires:	libxml2-devel
-BuildRequires:	cmake
-BuildRequires:	desktop-file-utils
+
 Provides:	perl(Geo::OSM::EntitiesV3)
 Provides:	perl(Geo::OSM::OsmReaderV5)
 Provides:	perl(Geo::OSM::EntitiesV5)
 Provides:	perl(Geo::OSM::OsmReaderV3)
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 Gpsdrive is a map-based navigation system. It displays your position on a 
@@ -44,7 +45,6 @@ bearing, arrival time, actual position, and target position. Speech output
 is also available.
 
 %prep
-
 %setup -q -n %{name}-%{version} -a1
 %patch0 -p1 -b .leaf
 %patch1 -p1
@@ -60,17 +60,15 @@ export CXXFLAGS="%optflags -DBOOST_FILESYSTEM_VERSION=2"
 %make
 
 %install
-rm -rf %{buildroot}
 %makeinstall_std -C build
 
-rm -rf %{buildroot}%_datadir/%name/{AUTHORS,FAQ*,LEEME,LISEZMOI,README*,TODO,NMEA*,GPS-*}
+rm -rf %{buildroot}%{_datadir}/%{name}/{AUTHORS,FAQ*,LEEME,LISEZMOI,README*,TODO,NMEA*,GPS-*}
 
 install -m644 %{SOURCE2} -D %{buildroot}%{_liconsdir}/%{name}.png
 install -m644 %{SOURCE3} -D %{buildroot}%{_iconsdir}/%{name}.png
 install -m644 %{SOURCE4} -D %{buildroot}%{_miconsdir}/%{name}.png
 
 #menu entry
-
 desktop-file-install --vendor="" \
   --remove-category="Application" \
   --add-category="GTK" \
@@ -83,21 +81,7 @@ cp -a usr/share/icons/map-icons/* %{buildroot}%{_datadir}/icons/map-icons/
 
 %find_lang %{name}
 
-%clean
-rm -rf %{buildroot}
-
-%if %mdkversion < 200900
-%post
-%update_menus
-%endif
-
-%if %mdkversion < 200900
-%postun
-%clean_menus
-%endif
-
 %files -f %{name}.lang
-%defattr(-,root,root)
 %doc AUTHORS README
 %{_bindir}/*
 %{_mandir}/man1/*.1*
@@ -107,6 +91,6 @@ rm -rf %{buildroot}
 %{_iconsdir}/%{name}.png
 %{_liconsdir}/%{name}.png
 %{_datadir}/icons/map-icons
-%_datadir/%name
-%_datadir/applications/*
+%{_datadir}/%{name}
+%{_datadir}/applications/*
 %{perl_vendorlib}/*
