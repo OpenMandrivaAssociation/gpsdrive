@@ -1,0 +1,17 @@
+diff -p -up gpsdrive-2.10pre6/src/mapnik.cpp.leaf gpsdrive-2.10pre6/src/mapnik.cpp
+--- gpsdrive-2.10pre6/src/mapnik.cpp.leaf	2008-08-27 00:55:53.000000000 +0200
++++ gpsdrive-2.10pre6/src/mapnik.cpp	2008-11-07 10:28:53.000000000 +0100
+@@ -205,11 +205,11 @@ namespace mapnik {
+         try {
+ 
+             if ( boost::filesystem::is_regular( dir_itr->status() ) ) {
+-                if (mydebug > 10) cout << "freetype_engine::register_font(" << dir_itr->leaf() << ")" << endl;
++                if (mydebug > 10) cout << "freetype_engine::register_font(" << dir_itr->path().leaf() << ")" << endl;
+                 freetype_engine::register_font( dir_itr->string() );
+             }
+         } catch ( const std::exception & ex ) {
+-            std::cout << dir_itr->leaf() << " " << ex.what() << std::endl;
++            std::cout << dir_itr->path().leaf() << " " << ex.what() << std::endl;
+         }
+ 
+     }

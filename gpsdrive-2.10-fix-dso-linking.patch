@@ -1,0 +1,20 @@
+--- gpsdrive-2.10-20100508/src/CMakeLists.txt.old	2010-05-10 01:17:03.000000000 +0100
++++ gpsdrive-2.10-20100508/src/CMakeLists.txt	2010-05-10 01:18:26.000000000 +0100
+@@ -28,7 +28,7 @@ if (WITH_POSTGIS)
+ endif (WITH_POSTGIS)
+ 
+ if (WITH_MAPNIK)
+-  find_package(Boost COMPONENTS filesystem REQUIRED)
++  find_package(Boost COMPONENTS filesystem system thread REQUIRED)
+   find_package(Mapnik REQUIRED)
+   add_definitions(-DMAPNIK)
+ endif (WITH_MAPNIK)
+@@ -176,7 +176,7 @@ if (WITH_MAPNIK)
+   )
+   set(GPSDRIVE_LINK_LIBRARIES
+     ${GPSDRIVE_LINK_LIBRARIES}
+-    ${Boost_FILESYSTEM_LIBRARY}
++    ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY}
+     ${MAPNIK_LIBRARIES}
+   )
+ endif (WITH_MAPNIK)

@@ -1,0 +1,66 @@
+diff -Nur gpsdrive-2.10-20100508.sav/cmake/Modules/FindBoost.cmake gpsdrive-2.10-20100508/cmake/Modules/FindBoost.cmake
+--- gpsdrive-2.10-20100508.sav/cmake/Modules/FindBoost.cmake	2010-05-08 20:56:16.000000000 -0600
++++ gpsdrive-2.10-20100508/cmake/Modules/FindBoost.cmake	2010-05-09 14:28:05.000000000 -0600
+@@ -78,7 +78,7 @@
+ 
+ # MESSAGE(STATUS "Finding Boost libraries.... ")
+ 
+-SET( _boost_TEST_VERSIONS ${Boost_ADDITIONAL_VERSIONS} "1.33" "1.33.0" "1.33.1" "1.34" "1.34.0" "1.34.1" )
++SET( _boost_TEST_VERSIONS ${Boost_ADDITIONAL_VERSIONS} "1.33" "1.33.0" "1.33.1" "1.34" "1.34.0" "1.34.1" "1.41.0")
+ 
+ ############################################
+ #
+diff -Nur gpsdrive-2.10-20100508.sav/cmake/Modules/FindGTK2.cmake gpsdrive-2.10-20100508/cmake/Modules/FindGTK2.cmake
+--- gpsdrive-2.10-20100508.sav/cmake/Modules/FindGTK2.cmake	2010-05-08 20:56:16.000000000 -0600
++++ gpsdrive-2.10-20100508/cmake/Modules/FindGTK2.cmake	2010-05-09 13:35:59.000000000 -0600
+@@ -228,6 +228,30 @@
+         /opt/gnome/lib
+     )
+ 
++    FIND_LIBRARY(GTK2_PANGO_LIBRARY
++      NAMES
++        pango-1.0
++      PATHS
++        ${_GDK2_LIBDIR}
++        /usr/lib
++        /usr/local/lib
++        /usr/openwin/lib
++        /usr/X11R6/lib
++        /opt/gnome/lib
++    )
++
++    FIND_LIBRARY(GTK2_GDK_PIXBUF_LIBRARY
++      NAMES
++        gdk_pixbuf-2.0
++      PATHS
++        ${_GDK2_LIBDIR}
++        /usr/lib
++        /usr/local/lib
++        /usr/openwin/lib
++        /usr/X11R6/lib
++        /opt/gnome/lib
++    )
++
+     FIND_LIBRARY(GTK2_GMODULE_LIBRARY
+       NAMES
+         gmodule-2.0
+@@ -312,6 +336,9 @@
+                     SET(GTK2_LIBRARIES
+                       ${GTK2_GTK_LIBRARY}
+                       ${GTK2_GDK_LIBRARY}
++                      ${GTK2_GDK_PIXBUF_LIBRARY}
++                      ${GTK2_GOBJECT_LIBRARY}
++                      ${GTK2_PANGO_LIBRARY}
+                       ${GTK2_GLIB_LIBRARY}
+                     )
+                     #${GTK2_GOBJECT_LIBRARY})
+diff -Nur gpsdrive-2.10-20100508.sav/DefineOptions.cmake gpsdrive-2.10-20100508/DefineOptions.cmake
+--- gpsdrive-2.10-20100508.sav/DefineOptions.cmake	2010-05-08 20:57:14.000000000 -0600
++++ gpsdrive-2.10-20100508/DefineOptions.cmake	2010-05-09 12:10:51.000000000 -0600
+@@ -10,5 +10,5 @@
+ option(WITH_KISMET "Build with kismet support" ON)
+ option(DEBUG "Build with debug -D support" ON)
+ option(WITH_NAVIGATION "Build with routing support" OFF)
+-option(LIBGPS_OLD "Build with old libgps version (<2.90)" ON)
++option(LIBGPS_OLD "Build with old libgps version (<2.90)" OFF)
+ 
