@@ -1,0 +1,104 @@
+--- gpsdrive-2.11/src/mapnik.cpp.mapnikcpp	2012-11-05 14:48:22.910782929 +0400
++++ gpsdrive-2.11/src/mapnik.cpp	2012-11-05 15:01:26.820786081 +0400
+@@ -22,6 +22,8 @@
+ #include <mapnik/font_engine_freetype.hpp>
+ #include <mapnik/config_error.hpp>
+ #include <mapnik/image_util.hpp>
++#include <mapnik/version.hpp>
++#include <mapnik/graphics.hpp>
+ #include <fstream>
+ #include <sys/stat.h>
+ 
+@@ -29,10 +31,17 @@
+ #include "config.h"
+ #include "gpsdrive_config.h"
+ 
++
++#if MAPNIK_VERSION < 200000
+ using mapnik::Image32;
+-using mapnik::Map;
+ using mapnik::Layer;
+ using mapnik::Envelope;
++#else
++using mapnik::image_32;
++using mapnik::layer;
++using mapnik::box2d;
++#endif
++using mapnik::Map;
+ using mapnik::coord2d;
+ using mapnik::feature_ptr;
+ using mapnik::geometry_ptr;
+@@ -209,11 +218,20 @@ namespace mapnik {
+         try {
+ 
+             if ( boost::filesystem::is_regular( dir_itr->status() ) ) {
+-                if (mydebug > 10) cout << "freetype_engine::register_font(" << dir_itr->path().leaf() << ")" << endl;
+-                freetype_engine::register_font( dir_itr->string() );
+-            }
+-        } catch ( const std::exception & ex ) {
+-            std::cout << dir_itr->path().leaf() << " " << ex.what() << std::endl;
++//http://www.boost.org/doc/libs/1_46_1/libs/filesystem/v2/doc/index.htm
++#if BOOST_FILESYSTEM_VERSION < 3
++		if (mydebug > 10) cout << "freetype_engine::register_font(" << dir_itr->leaf() << ")" << endl;
++		freetype_engine::register_font( dir_itr->string() );
++	    }
++	} catch ( const std::exception & ex ) {
++	    std::cout << dir_itr->leaf() << " " << ex.what() << std::endl;
++#else           
++		if (mydebug > 10) cout << "freetype_engine::register_font(" << dir_itr->path().filename() << ")" << endl;
++		freetype_engine::register_font( dir_itr->path().string() );
++	    }
++	} catch ( const std::exception & ex ) {
++	    std::cout << dir_itr->path().filename() << " " << ex.what() << std::endl;
++#endif  
+         }
+ 
+     }
+@@ -483,7 +501,7 @@ namespace mapnik {
+             double res = scale_denom * 0.00028;
+ 		
+             /* render image */
+-	
++#if MAPNIK_VERSION < 200000
+             Envelope<double> box = Envelope<double>(MapnikMap.NewCenterPt.x - 0.5 * MapnikMap.WidthInt * res,
+                                                     MapnikMap.NewCenterPt.y - 0.5 * MapnikMap.HeightInt * res,
+                                                     MapnikMap.NewCenterPt.x + 0.5 * MapnikMap.WidthInt * res,
+@@ -496,16 +514,36 @@ namespace mapnik {
+             ren.apply();
+ 
+             if (mydebug > 0) std::cout << MapnikMap.MapPtr->getCurrentExtent() << "\n";
++#else
++	    box2d<double> box = box2d<double>(MapnikMap.NewCenterPt.x - 0.5 * MapnikMap.WidthInt * res,
++                                              MapnikMap.NewCenterPt.y - 0.5 * MapnikMap.HeightInt * res,
++                                              MapnikMap.NewCenterPt.x + 0.5 * MapnikMap.WidthInt * res,
++                                              MapnikMap.NewCenterPt.y + 0.5 * MapnikMap.HeightInt * res);
+ 
++            MapnikMap.MapPtr->zoom_to_box(box);
++
++            image_32 buf(MapnikMap.WidthInt, MapnikMap.HeightInt);
++            mapnik::agg_renderer<image_32> ren(*MapnikMap.MapPtr,buf);
++            ren.apply();
++
++            if (mydebug > 0) std::cout << MapnikMap.MapPtr->get_current_extent() << "\n";
++#endif
+             /* get raw data for gpsdrives pixbuf */
+             convert_argb32_to_gdkpixbuf_data(buf.raw_data(), MapnikMap.ImageRawDataPtr);
+ 
+             /* create pixbuf data before check to unref */
+-            if (MapnikMap.GdkPixbufPtr) gdk_pixbuf_unref(MapnikMap.GdkPixbufPtr);
+-            MapnikMap.GdkPixbufPtr = gdk_pixbuf_new_from_data(MapnikMap.ImageRawDataPtr, GDK_COLORSPACE_RGB, FALSE, 8, 1280, 1024, 1280 * 3, NULL, NULL);
++            if (MapnikMap.GdkPixbufPtr)
++		g_object_unref(MapnikMap.GdkPixbufPtr);
++
++            MapnikMap.GdkPixbufPtr = gdk_pixbuf_new_from_data(MapnikMap.ImageRawDataPtr,
++				GDK_COLORSPACE_RGB, FALSE, 8, 1280, 1024, 1280 * 3, NULL, NULL);
+ 
+             /* ok we have a map set default values */
++#if MAPNIK_VERSION < 200000
+             mapnik::Envelope<double> ext = MapnikMap.MapPtr->getCurrentExtent();
++#else
++            mapnik::box2d<double> ext = MapnikMap.MapPtr->get_current_extent();
++#endif
+             mapnik::coord2d pt = ext.center();
+             MapnikMap.CenterPt.x = pt.x;
+             MapnikMap.CenterPt.y = pt.y;
