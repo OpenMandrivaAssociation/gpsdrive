@@ -1,7 +1,7 @@
 Summary:	GPS based navigation tool
 Name:		gpsdrive
 Version:	2.11
-Release:	4
+Release:	5
 License:	GPLv2+
 Group:		Networking/Other
 URL:		http://www.gpsdrive.de/
