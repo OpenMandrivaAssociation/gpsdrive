@@ -4,7 +4,7 @@ Version:	2.11
 Release:	5
 License:	GPLv2+
 Group:		Networking/Other
-URL:		http://www.gpsdrive.de/
+URL:		https://www.gpsdrive.de/
 Source0:	http://www.gpsdrive.de/packages/%{name}-%{version}.tar.gz
 Source1:	http://download.sourceforge.net/sourceforge/gpsdrive/openstreetmap-map-icons-minimal.tar.gz
 Source2:	%{name}-48.png
